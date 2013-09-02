@@ -6,7 +6,7 @@ import (
 )
 
 type Config struct {
-	Monitors      []*Monitor
+	MonitorConfs  []*MonitorConf  `json:"monitors"`
 	NotifierConfs []*NotifierConf `json:"notifiers"`
 }
 

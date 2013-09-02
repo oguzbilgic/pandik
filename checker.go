@@ -4,10 +4,10 @@ import (
 	"net/http"
 )
 
-type Checker func(*Monitor) (bool, error)
+type Checker func(*MonitorConf) (bool, error)
 
-func checkHTTPStatus(monitor *Monitor) (bool, error) {
-	resp, err := http.Get("http://" + monitor.Url)
+func checkHTTPStatus(mc *MonitorConf) (bool, error) {
+	resp, err := http.Get("http://" + mc.Url)
 	if err != nil {
 		return false, err
 	}

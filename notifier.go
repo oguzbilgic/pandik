@@ -22,8 +22,8 @@ func newNotifier(nc *NotifierConf) (Notifier, error) {
 
 func notifyViaCLI(m *Monitor) {
 	if m.Up {
-		fmt.Println("UP:\t " + m.Url)
+		fmt.Println("UP:\t " + m.Conf.Url)
 	} else {
-		fmt.Println("DOWN:\t " + m.Url)
+		fmt.Println("DOWN:\t " + m.Conf.Url)
 	}
 }

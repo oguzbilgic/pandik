@@ -17,8 +17,16 @@ func main() {
 
 	monitorChan := make(chan *Monitor, 50)
 
-	for _, monitor := range config.Monitors {
+	var monitors []Monitor
+	for _, monitorConf := range config.MonitorConfs {
+		monitor, err := NewMonitor(monitorConf)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
 		go monitor.Watch(monitorChan)
+		monitors = append(monitors, *monitor)
 	}
 
 	var notifiers []Notifier
@@ -29,6 +37,7 @@ func main() {
 			fmt.Println(err)
 			continue
 		}
+
 		notifiers = append(notifiers, notifier)
 	}
 
