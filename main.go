@@ -18,6 +18,7 @@ type Checker func(*Monitor) (bool, error)
 type Monitor struct {
 	Type    string
 	Url     string
+	Up      bool
 	Freq    string
 	Checker Checker
 }
@@ -42,29 +43,30 @@ func (m *Monitor) selectChecker() error {
 	case "http-status":
 		m.Checker = checkHTTPStatus
 	default:
-		return fmt.Errorf("Not suppported check type: %s", m.Type)
+		return fmt.Errorf("ERROR:\t Not suppported check type: %s", m.Type)
 	}
 
 	return nil
 }
 
-func (m *Monitor) Watch() {
-	if m.Checker == nil {
+func (m *Monitor) Watch(up chan *Monitor, down chan *Monitor) {
+	err := m.selectChecker()
+	if err != nil || m.Checker == nil {
 		return
 	}
 
 	for {
-		working, err := m.Checker(m)
+		m.Up, err = m.Checker(m)
 		if err != nil {
 			panic(err)
 		}
 
-		if !working {
-			fmt.Printf("DOWN: %s - next check in 15s \n", m.Url)
+		if !m.Up {
+			down <- m
 			time.Sleep(15 * time.Second)
 		} else {
+			up <- m
 			nextCheck, _ := time.ParseDuration(m.Freq)
-			fmt.Printf("UP: %s - next check in %s \n", m.Url, nextCheck)
 			time.Sleep(nextCheck)
 		}
 	}
@@ -84,30 +86,28 @@ func checkHTTPStatus(monitor *Monitor) (bool, error) {
 }
 
 func main() {
-	configFile := flag.String("c", "~/.pandik.json", "Configuration file")
+	configFilePath := flag.String("c", "~/.pandik.json", "Configuration file")
 	flag.Parse()
 
-	config, err := parseConfig(configFile)
+	config, err := parseConfig(configFilePath)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	for _, monitor := range config.Monitors {
-		err := monitor.selectChecker()
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-
-		println("New monitor: " + monitor.Type + " - " + monitor.Url)
-	}
+	up := make(chan *Monitor, 50)
+	down := make(chan *Monitor, 50)
 
 	for _, monitor := range config.Monitors {
-		go monitor.Watch()
+		go monitor.Watch(up, down)
 	}
 
 	for {
-		time.Sleep(10 * time.Minute)
+		select {
+		case m := <-down:
+			fmt.Println("DOWN:\t " + m.Url)
+		case m := <-up:
+			fmt.Println("UP:\t " + m.Url)
+		}
 	}
 }

@@ -41,6 +41,10 @@
   
   "notifications": [
     {
+      "type": "web",
+      "address": "mydomain.com/callback"
+    },
+    {
       "type": "mail",
       "address": "my@gmail.com"
     },
