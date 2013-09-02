@@ -15,19 +15,29 @@ func main() {
 		return
 	}
 
-	up := make(chan *Monitor, 50)
-	down := make(chan *Monitor, 50)
+	monitorChan := make(chan *Monitor, 50)
 
 	for _, monitor := range config.Monitors {
-		go monitor.Watch(up, down)
+		go monitor.Watch(monitorChan)
+	}
+
+	var notifiers []Notifier
+	notifiers = append(notifiers, notifyViaCLI)
+	for _, notifierConf := range config.NotifierConfs {
+		notifier, err := newNotifier(notifierConf)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		notifiers = append(notifiers, notifier)
 	}
 
 	for {
 		select {
-		case m := <-down:
-			fmt.Println("DOWN:\t " + m.Url)
-		case m := <-up:
-			fmt.Println("UP:\t " + m.Url)
+		case m := <-monitorChan:
+			for _, notifier := range notifiers {
+				notifier(m)
+			}
 		}
 	}
 }

@@ -55,10 +55,6 @@
     {
       "type": "twitter",
       "address": "@account"
-    },
-    {
-      "type": "sms",
-      "address": "+19998887766"
     }
   ]
 }

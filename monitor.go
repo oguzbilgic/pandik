@@ -24,7 +24,7 @@ func (m *Monitor) selectChecker() error {
 	return nil
 }
 
-func (m *Monitor) Watch(up chan *Monitor, down chan *Monitor) {
+func (m *Monitor) Watch(monitorChan chan *Monitor) {
 	err := m.selectChecker()
 	if err != nil || m.Checker == nil {
 		return
@@ -36,12 +36,7 @@ func (m *Monitor) Watch(up chan *Monitor, down chan *Monitor) {
 			panic(err)
 		}
 
-		if !m.Up {
-			down <- m
-		} else {
-			up <- m
-		}
-
+		monitorChan <- m
 		nextCheck, _ := time.ParseDuration(m.Freq)
 		time.Sleep(nextCheck)
 	}
