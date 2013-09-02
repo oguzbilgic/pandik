@@ -1,0 +1,60 @@
+{
+  "api": {
+    "format": "json",
+    "port": 9571
+  },
+  
+  "checks": [
+    {
+      "type": "http-status",
+      "url": "myblog.com",
+      "freq": "10s"
+    },
+    {
+      "type": "http-keyword",
+      "url": "mywebapp.com",
+      "freq": "5m",
+      "data": {
+        "keyword": "git"
+      }
+    },
+    {
+      "type": "ssh",
+      "url": "mysshserver.com",
+      "freq": "6h"
+    },
+    {
+      "type": "ftp",
+      "url": "myftp.com",
+      "freq": "6h"
+    },
+    {
+      "type": "mysql",
+      "url": "mydbserver.com",
+      "freq": "10m",
+      "data": {
+        "username": "root",
+        "password": "pass"
+      }
+    }
+  ],
+  
+  "notifications": [
+    {
+      "type": "mail",
+      "address": "my@gmail.com"
+    },
+    {
+      "type": "sms",
+      "address": "+19998887766"
+    },
+    {
+      "type": "twitter",
+      "address": "@account"
+    },
+    {
+      "type": "sms",
+      "address": "+19998887766"
+    }
+  ]
+}
