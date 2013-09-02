@@ -6,7 +6,7 @@ import (
 )
 
 type Config struct {
-	Monitors []*Monitor `json:"checks"`
+	Monitors []*Monitor
 }
 
 func parseConfig(path *string) (*Config, error) {

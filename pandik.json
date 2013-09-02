@@ -4,7 +4,7 @@
     "port": 9571
   },
   
-  "checks": [
+  "monitors": [
     {
       "type": "http-status",
       "url": "myblog.com",
@@ -39,7 +39,7 @@
     }
   ],
   
-  "notifications": [
+  "notifiers": [
     {
       "type": "web",
       "address": "mydomain.com/callback"
