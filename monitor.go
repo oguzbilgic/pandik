@@ -9,6 +9,7 @@ type MonitorConf struct {
 	Type string
 	Url  string
 	Freq string
+	Data map[string]string
 }
 
 type Monitor struct {
