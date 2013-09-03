@@ -3,10 +3,17 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os/user"
+	"path"
 )
 
 func main() {
-	configFilePath := flag.String("c", "~/.pandik.json", "Configuration file")
+	usr, err := user.Current()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	configFilePath := flag.String("c", path.Join(usr.HomeDir, ".pandik.json"), "Configuration file")
 	flag.Parse()
 
 	config, err := parseConfig(configFilePath)
