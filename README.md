@@ -27,7 +27,7 @@ Pandik uses `~/.pandik.json` file for configuration by default, but you can over
       "url": "webapp.com",
       "freq": "5m"
     }
-  ]
+  ],
   "notifiers": [
     {
       "type": "web",
