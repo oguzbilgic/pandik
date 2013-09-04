@@ -22,7 +22,7 @@ func main() {
 		return
 	}
 
-	monitorChan := make(chan *Monitor, 50)
+	logChan := make(chan *MonitorLog, 50)
 
 	var monitors []Monitor
 	for _, monitorConf := range config.MonitorConfs {
@@ -32,7 +32,7 @@ func main() {
 			continue
 		}
 
-		go monitor.Watch(monitorChan)
+		go monitor.Watch(logChan)
 		monitors = append(monitors, *monitor)
 	}
 
@@ -49,9 +49,9 @@ func main() {
 	}
 
 	for {
-		m := <-monitorChan
+		log := <-logChan
 		for _, notifier := range notifiers {
-			notifier(m)
+			notifier(log)
 		}
 	}
 }

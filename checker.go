@@ -1,11 +1,11 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
 )
 
-type Checker func(*MonitorConf) (bool, error)
+type Checker func(*MonitorConf) *MonitorLog
 
 func GetChecker(checkerType string) (Checker, error) {
 	switch checkerType {
@@ -16,16 +16,16 @@ func GetChecker(checkerType string) (Checker, error) {
 	return nil, fmt.Errorf("ERROR:\t Not suppported checker: %s", checkerType)
 }
 
-func checkHTTPStatus(mc *MonitorConf) (bool, error) {
+func checkHTTPStatus(mc *MonitorConf) *MonitorLog {
 	resp, err := http.Head("http://" + mc.Url)
 	if err != nil {
-		return false, err
+		return NewMonitorLog(false, err.Error())
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return false, nil
+		return NewMonitorLog(false, "Http status is "+resp.Status)
 	}
 
-	return true, nil
+	return NewMonitorLog(true, "Http status code is 200")
 }
