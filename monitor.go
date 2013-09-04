@@ -34,11 +34,8 @@ func (m *Monitor) Watch(monitorChan chan *Monitor) {
 			panic(err)
 		}
 
-		if newUp != m.Up {
-			monitorChan <- m
-			m.Up = newUp
-		}
-
+		m.Up = newUp
+		monitorChan <- m
 		nextCheck, _ := time.ParseDuration(m.Conf.Freq)
 		time.Sleep(nextCheck)
 	}
