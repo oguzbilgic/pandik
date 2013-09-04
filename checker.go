@@ -7,10 +7,11 @@ import (
 type Checker func(*MonitorConf) (bool, error)
 
 func checkHTTPStatus(mc *MonitorConf) (bool, error) {
-	resp, err := http.Get("http://" + mc.Url)
+	resp, err := http.Head("http://" + mc.Url)
 	if err != nil {
 		return false, err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
 		return false, nil
