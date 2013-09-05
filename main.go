@@ -49,11 +49,9 @@ func main() {
 	}
 
 	for {
-		select {
-		case m := <-monitorChan:
-			for _, notifier := range notifiers {
-				notifier(m)
-			}
+		m := <-monitorChan
+		for _, notifier := range notifiers {
+			notifier(m)
 		}
 	}
 }
