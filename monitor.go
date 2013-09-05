@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -19,12 +18,12 @@ type Monitor struct {
 }
 
 func NewMonitor(conf *MonitorConf) (*Monitor, error) {
-	switch conf.Type {
-	case "http-status":
-		return &Monitor{conf, checkHTTPStatus, false}, nil
+	checker, err := GetChecker(conf.Type)
+	if err != nil {
+		return nil, err
 	}
 
-	return nil, fmt.Errorf("ERROR:\t Not suppported checker: %s", conf.Type)
+	return &Monitor{conf, checker, false}, nil
 }
 
 func (m *Monitor) Watch(monitorChan chan *Monitor) {
