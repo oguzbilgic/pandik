@@ -6,6 +6,7 @@ import (
 )
 
 type Config struct {
+	ApiConf       *ApiConf
 	MonitorConfs  []*MonitorConf  `json:"monitors"`
 	NotifierConfs []*NotifierConf `json:"notifiers"`
 }

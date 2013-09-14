@@ -4,6 +4,7 @@ type Server struct {
 	Config  *Config
 	LogChan chan *Log
 
+	Api       *Api
 	Monitors  []*Monitor
 	Notifiers []Notifier
 }
