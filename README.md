@@ -2,15 +2,17 @@
 
 Monitoring tool for web services. Self-hosted [pingdom](http://pingdom.com) alternative.
 
-## 1. Installation 
+## Installation 
 
 If you have go tools installes to your system, enter the command bellow to your terminal.
 
-    go get github.com/oguzbilgic/pandik
+```bash
+$ go get github.com/oguzbilgic/pandik
+```
     
 Or you can just download the compiled binary to your computer.
 
-## 2. Configuration
+## Configuration
 
 Pandik uses `~/.pandik.json` file for configuration by default, but you can overwrite this by using 
 `-c` command file with path to your configuration file. Here is a sample configuration file: 
@@ -37,9 +39,14 @@ Pandik uses `~/.pandik.json` file for configuration by default, but you can over
 }
 ```
 
-## 3. Usage
+## Usage
 
 Locate your configuration file and run the comman bellow
 
-    pandik -c /path/to/configuration.json
+```bash
+$ pandik -c /path/to/configuration.json
+```
     
+## License
+
+The MIT License (MIT)
