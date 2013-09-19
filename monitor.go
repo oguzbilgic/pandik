@@ -39,7 +39,3 @@ func (m *Monitor) Watch(logChan chan *Log) {
 		time.Sleep(nextCheck)
 	}
 }
-
-func (m *Monitor) LastLog() *Log {
-	return m.Logs[m.Logs.Len()-1]
-}

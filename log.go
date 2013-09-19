@@ -34,3 +34,7 @@ func (logs *Logs) Add(log *Log) {
 	*logs = append(*logs, log)
 	sort.Sort(logs)
 }
+
+func (logs Logs) Last() *Log {
+	return logs[logs.Len()-1]
+}
