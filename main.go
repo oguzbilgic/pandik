@@ -15,12 +15,13 @@ func main() {
 	}
 
 	configFilePath := flag.String("c", path.Join(usr.HomeDir, ".pandik.json"), "Configuration file")
+	logFilePath := flag.String("l", path.Join(usr.HomeDir, ".pandik.log"), "Log file path for deamon")
 	deamon := flag.Bool("d", false, "Run as a deamon")
 	flag.Parse()
 
 	if *deamon {
 		args := []string{os.Args[0], "-c", *configFilePath}
-		pid, err := deamonize(args)
+		pid, err := deamonize(args, *logFilePath)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -42,7 +43,7 @@ func main() {
 	server.Loop()
 }
 
-func deamonize(args []string) (int, error) {
+func deamonize(args []string, logFilePath string) (int, error) {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return -1, err
@@ -53,7 +54,12 @@ func deamonize(args []string) (int, error) {
 		return -1, err
 	}
 
-	procattr := os.ProcAttr{Dir: cwd, Env: os.Environ(), Files: []*os.File{nil, nil, nil}}
+	logFile, err := os.Create(logFilePath)
+	if err != nil {
+		return -1, err
+	}
+
+	procattr := os.ProcAttr{Dir: cwd, Env: os.Environ(), Files: []*os.File{logFile, logFile, logFile}}
 	p, err := os.StartProcess(path, args, &procattr)
 	if err != nil {
 		return -1, err

@@ -52,6 +52,12 @@ To run pandik as a deamon on your system use the `-d` flag
 ```bash
 $ pandik -d -c /path/to/configuration.json
 ```
+
+By default pandik uses `~/.pandik.log` for deamon's log file, but this can be overwritten by `-l` flag
+
+```bash
+$ pandik -d -l /path/to/log.file -c /path/to/configuration.json
+```
     
 ## License
 
