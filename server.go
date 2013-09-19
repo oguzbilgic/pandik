@@ -1,9 +1,10 @@
 package main
 
 type Server struct {
-	Config    *Config
-	LogChan   chan *MonitorLog
-	Monitors  []Monitor
+	Config  *Config
+	LogChan chan *MonitorLog
+
+	Monitors  []*Monitor
 	Notifiers []Notifier
 }
 
@@ -19,7 +20,7 @@ func NewServer(config *Config) (*Server, error) {
 			return nil, err
 		}
 
-		s.Monitors = append(s.Monitors, *monitor)
+		s.Monitors = append(s.Monitors, monitor)
 	}
 
 	s.Notifiers = append(s.Notifiers, notifyViaCLI)
