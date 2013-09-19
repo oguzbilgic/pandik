@@ -1,5 +1,7 @@
 ## head
 
+* Add -d flag for running pandik as a deamon
+* Add -l flag for setting up custom log file path
 * Add Server
 * Rename MonitorLog to Log
 
