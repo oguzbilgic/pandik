@@ -23,9 +23,9 @@ func NewServer(config *Config) (*Server, error) {
 		s.Monitors = append(s.Monitors, monitor)
 	}
 
-	s.Notifiers = append(s.Notifiers, notifyViaCLI)
+	s.Notifiers = append(s.Notifiers, NotifyViaStderr)
 	for _, notifierConf := range config.NotifierConfs {
-		notifier, err := newNotifier(notifierConf)
+		notifier, err := NewNotifier(notifierConf)
 		if err != nil {
 			return nil, err
 		}

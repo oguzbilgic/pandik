@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"fmt"
+	"log"
 )
 
 type Notifier func(*Log)
@@ -12,15 +12,15 @@ type NotifierConf struct {
 	Address string
 }
 
-func newNotifier(nc *NotifierConf) (Notifier, error) {
+func NewNotifier(nc *NotifierConf) (Notifier, error) {
 	switch nc.Type {
-	case "cli":
-		return notifyViaCLI, nil
+	case "stderr":
+		return NotifyViaStderr, nil
 	}
 
 	return nil, errors.New("not suppported notifier: " + nc.Type)
 }
 
-func notifyViaCLI(log *Log) {
-	fmt.Printf("%s: %s\n", log.Monitor.Conf.Url, log.Message)
+func NotifyViaStderr(l *Log) {
+	log.Printf("Monitor %s: %s\n", l.Monitor.Conf.Url, l.Message)
 }
