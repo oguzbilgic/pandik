@@ -46,6 +46,12 @@ Locate your configuration file and run the comman bellow
 ```bash
 $ pandik -c /path/to/configuration.json
 ```
+
+To run pandik as a deamon on your system use the `-d` flag
+
+```bash
+$ pandik -d -c /path/to/configuration.json
+```
     
 ## License
 
