@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -17,7 +18,7 @@ func newNotifier(nc *NotifierConf) (Notifier, error) {
 		return notifyViaCLI, nil
 	}
 
-	return nil, fmt.Errorf("ERROR:\t Not suppported notifier: %s", nc.Type)
+	return nil, errors.New("not suppported notifier: " + nc.Type)
 }
 
 func notifyViaCLI(log *Log) {
