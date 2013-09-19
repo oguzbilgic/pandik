@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 	"net/http"
 )
 
@@ -13,7 +13,7 @@ func GetChecker(checkerType string) (Checker, error) {
 		return checkHTTPStatus, nil
 	}
 
-	return nil, fmt.Errorf("ERROR:\t Not suppported checker: %s", checkerType)
+	return nil, errors.New("not suppported checker: " + checkerType)
 }
 
 func checkHTTPStatus(mc *MonitorConf) *MonitorLog {
