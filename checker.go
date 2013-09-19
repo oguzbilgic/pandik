@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-type Checker func(*MonitorConf) *MonitorLog
+type Checker func(*MonitorConf) *Log
 
 func GetChecker(checkerType string) (Checker, error) {
 	switch checkerType {
@@ -16,16 +16,16 @@ func GetChecker(checkerType string) (Checker, error) {
 	return nil, errors.New("not suppported checker: " + checkerType)
 }
 
-func checkHTTPStatus(mc *MonitorConf) *MonitorLog {
+func checkHTTPStatus(mc *MonitorConf) *Log {
 	resp, err := http.Head("http://" + mc.Url)
 	if err != nil {
-		return NewMonitorLog(false, err.Error())
+		return NewLog(false, err.Error())
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return NewMonitorLog(false, "Http status is "+resp.Status)
+		return NewLog(false, "Http status is "+resp.Status)
 	}
 
-	return NewMonitorLog(true, "Http status code is 200")
+	return NewLog(true, "Http status code is 200")
 }

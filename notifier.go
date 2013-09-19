@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-type Notifier func(*MonitorLog)
+type Notifier func(*Log)
 
 type NotifierConf struct {
 	Type    string
@@ -20,6 +20,6 @@ func newNotifier(nc *NotifierConf) (Notifier, error) {
 	return nil, fmt.Errorf("ERROR:\t Not suppported notifier: %s", nc.Type)
 }
 
-func notifyViaCLI(log *MonitorLog) {
+func notifyViaCLI(log *Log) {
 	fmt.Printf("%s: %s\n", log.Monitor.Conf.Url, log.Message)
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"sort"
 	"time"
 )
 
@@ -12,40 +11,10 @@ type MonitorConf struct {
 	Data map[string]string
 }
 
-type MonitorLog struct {
-	Up      bool
-	Time    time.Time
-	Message string
-	Monitor *Monitor
-}
-
-func NewMonitorLog(up bool, message string) *MonitorLog {
-	return &MonitorLog{up, time.Now(), message, nil}
-}
-
-type MonitorLogs []*MonitorLog
-
-func (logs MonitorLogs) Len() int {
-	return len(logs)
-}
-
-func (logs MonitorLogs) Swap(i int, j int) {
-	logs[i], logs[j] = logs[j], logs[i]
-}
-
-func (logs MonitorLogs) Less(i int, j int) bool {
-	return logs[i].Time.Before(logs[j].Time)
-}
-
-func (logs *MonitorLogs) Add(log *MonitorLog) {
-	*logs = append(*logs, log)
-	sort.Sort(logs)
-}
-
 type Monitor struct {
 	Conf    *MonitorConf
 	Checker Checker
-	Logs    MonitorLogs
+	Logs    Logs
 }
 
 func NewMonitor(conf *MonitorConf) (*Monitor, error) {
@@ -57,20 +26,20 @@ func NewMonitor(conf *MonitorConf) (*Monitor, error) {
 	return &Monitor{conf, checker, nil}, nil
 }
 
-func (m *Monitor) Watch(logChan chan *MonitorLog) {
+func (m *Monitor) Watch(logChan chan *Log) {
 	for {
-		monitorLog := m.Checker(m.Conf)
-		monitorLog.Monitor = m
+		log := m.Checker(m.Conf)
+		log.Monitor = m
 
-		logChan <- monitorLog
+		logChan <- log
 
-		m.Logs.Add(monitorLog)
+		m.Logs.Add(log)
 
 		nextCheck, _ := time.ParseDuration(m.Conf.Freq)
 		time.Sleep(nextCheck)
 	}
 }
 
-func (m *Monitor) LastLog() *MonitorLog {
+func (m *Monitor) LastLog() *Log {
 	return m.Logs[m.Logs.Len()-1]
 }

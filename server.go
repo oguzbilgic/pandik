@@ -2,7 +2,7 @@ package main
 
 type Server struct {
 	Config  *Config
-	LogChan chan *MonitorLog
+	LogChan chan *Log
 
 	Monitors  []*Monitor
 	Notifiers []Notifier
@@ -11,7 +11,7 @@ type Server struct {
 func NewServer(config *Config) (*Server, error) {
 	s := &Server{
 		Config:  config,
-		LogChan: make(chan *MonitorLog, 50),
+		LogChan: make(chan *Log, 50),
 	}
 
 	for _, monitorConf := range config.MonitorConfs {
