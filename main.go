@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"log"
 	"os/user"
 	"path"
 )
@@ -10,7 +10,7 @@ import (
 func main() {
 	usr, err := user.Current()
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 
 	configFilePath := flag.String("c", path.Join(usr.HomeDir, ".pandik.json"), "Configuration file")
@@ -18,40 +18,13 @@ func main() {
 
 	config, err := parseConfig(configFilePath)
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatal(err)
 	}
 
-	logChan := make(chan *MonitorLog, 50)
-
-	var monitors []Monitor
-	for _, monitorConf := range config.MonitorConfs {
-		monitor, err := NewMonitor(monitorConf)
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-
-		go monitor.Watch(logChan)
-		monitors = append(monitors, *monitor)
+	server, err := NewServer(config)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	var notifiers []Notifier
-	notifiers = append(notifiers, notifyViaCLI)
-	for _, notifierConf := range config.NotifierConfs {
-		notifier, err := newNotifier(notifierConf)
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-
-		notifiers = append(notifiers, notifier)
-	}
-
-	for {
-		log := <-logChan
-		for _, notifier := range notifiers {
-			notifier(log)
-		}
-	}
+	server.Loop()
 }
