@@ -4,7 +4,7 @@ Monitoring tool for web services. Self-hosted [pingdom](http://pingdom.com) alte
 
 ## Installation 
 
-If you have go tools installes to your system, enter the command bellow to your terminal.
+If you have go tools installed to your system, enter the command bellow to your terminal.
 
 ```bash
 $ go get github.com/oguzbilgic/pandik
