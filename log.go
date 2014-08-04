@@ -6,14 +6,15 @@ import (
 )
 
 type Log struct {
-	Up      bool
-	Time    time.Time
-	Message string
-	Monitor *Monitor
+	Up       bool
+	Time     time.Time
+	Message  string
+	Monitor  *Monitor
+	Duration int64
 }
 
-func NewLog(up bool, message string) *Log {
-	return &Log{up, time.Now(), message, nil}
+func NewLog(up bool, message string, duration int64) *Log {
+	return &Log{up, time.Now(), message, nil, duration}
 }
 
 type Logs []*Log

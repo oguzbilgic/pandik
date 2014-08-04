@@ -2,15 +2,16 @@
 
 Monitoring tool for web services. Self-hosted [pingdom](http://pingdom.com) alternative.
 
+This is tweaked from the original to work with flapjack events. 
+Needs to access flapjacks redis (as specified in the address field).
+
+"url" is the event, roughly, and "name" is the "check" - or something. 
+
+
 ## Installation 
 
-If you have go tools installed to your system, enter the command bellow to your terminal.
-
-```bash
-$ go get github.com/oguzbilgic/pandik
-```
-    
-Or you can just download the compiled binary to your computer.
+Clone and go get -d & go build
+./pandik
 
 ## Configuration
 
@@ -19,21 +20,22 @@ Pandik uses `~/.pandik.json` file for configuration by default, but you can over
 
 ```json
 {
-  "api": {
-    "format": "json",
-    "port": 9571
-  },
+
   "monitors": [
     {
       "type": "http-status",
-      "url": "webapp.com",
-      "freq": "5m"
+      "url": "http://localhost:8000",
+      "name": "My website healthcheck",
+      "freq": "10s",
+      "timeout": "2s"
     }
+
   ],
+  
   "notifiers": [
     {
-      "type": "web",
-      "address": "mydomain.com/callback"
+      "type": "flapjack",
+      "address" : "boot2docker:6380"
     }
   ]
 }
