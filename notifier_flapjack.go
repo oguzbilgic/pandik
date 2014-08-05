@@ -1,8 +1,8 @@
 package main
 
 import (
-	"errors"
 	flapjack "github.com/flapjack/flapjack/src/flapjack"
+	"log"
 	Url "net/url"
 	"strconv"
 )
@@ -13,7 +13,7 @@ func NotifyFlapjackRedis(nc *NotifierConf) func(*Log) {
 
 		Hurl, err := Url.Parse(l.Monitor.Conf.Url)
 		if err != nil {
-			errors.New("Unable to parse " + l.Monitor.Conf.Url)
+			log.Printf("Flapjack Notifier: Unable to parse %s", l.Monitor.Conf.Url)
 			return
 		}
 
@@ -33,7 +33,7 @@ func NotifyFlapjackRedis(nc *NotifierConf) func(*Log) {
 		transport, err := flapjack.Dial(address, database)
 
 		if err != nil {
-			errors.New("Unable to connect to redis")
+			log.Printf("FlapjackNotifier: unable to connect to redis %s", address)
 			return
 		}
 
