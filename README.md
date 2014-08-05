@@ -2,15 +2,18 @@
 
 Monitoring tool for web services. Self-hosted [pingdom](http://pingdom.com) alternative.
 
-This is tweaked from the original to work with flapjack events. 
-Needs to access flapjacks redis (as specified in the address field).
-
-"url" is the event, roughly, and "name" is the "check" - or something. 
-
-
 ## Installation 
 
-Clone and go get -d & go build
+If you have go tools installed to your system, enter the command bellow to your terminal.
+
+```bash
+$ go get github.com/oguzbilgic/pandik
+```
+    
+## Build from a clone
+
+go get -d 
+go build
 ./pandik
 
 ## Configuration
@@ -36,6 +39,9 @@ Pandik uses `~/.pandik.json` file for configuration by default, but you can over
     {
       "type": "flapjack",
       "address" : "boot2docker:6380"
+    },
+    { 
+      "type": "stderr"
     }
   ]
 }
@@ -60,6 +66,12 @@ By default pandik uses `~/.pandik.log` for deamon's log file, but this can be ov
 ```bash
 $ pandik -d -l /path/to/log.file -c /path/to/configuration.json
 ```
+
+## Usage with Flapjack
+
+http://flapjack.io is a alert routing and event processing system, pandik can feed events into it (flapjack expects a heartbeat of events).
+
+To use this - use the flapjack notifier - with the "address" being the redis hostname and port. 
     
 ## License
 
