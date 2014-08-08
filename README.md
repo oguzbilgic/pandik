@@ -12,9 +12,11 @@ $ go get github.com/oguzbilgic/pandik
     
 ## Build from a clone
 
+```bash
 go get -d 
 go build
 ./pandik
+```
 
 ## Configuration
 
