@@ -5,10 +5,12 @@ import (
 )
 
 type MonitorConf struct {
-	Type string
-	Url  string
-	Freq string
-	Data map[string]string
+	Type    string
+	Url     string
+	Freq    string
+	Name    string
+	Timeout string
+	Data    map[string]string
 }
 
 type Monitor struct {

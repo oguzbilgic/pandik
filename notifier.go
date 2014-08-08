@@ -16,6 +16,8 @@ func NewNotifier(nc *NotifierConf) (Notifier, error) {
 	switch nc.Type {
 	case "stderr":
 		return NotifyViaStderr, nil
+	case "flapjack":
+		return NotifyFlapjackRedis(nc), nil
 	}
 
 	return nil, errors.New("not suppported notifier: " + nc.Type)

@@ -10,7 +10,11 @@ If you have go tools installed to your system, enter the command bellow to your 
 $ go get github.com/oguzbilgic/pandik
 ```
     
-Or you can just download the compiled binary to your computer.
+## Build from a clone
+
+go get -d 
+go build
+./pandik
 
 ## Configuration
 
@@ -19,21 +23,25 @@ Pandik uses `~/.pandik.json` file for configuration by default, but you can over
 
 ```json
 {
-  "api": {
-    "format": "json",
-    "port": 9571
-  },
+
   "monitors": [
     {
       "type": "http-status",
-      "url": "webapp.com",
-      "freq": "5m"
+      "url": "http://localhost:8000",
+      "name": "My website healthcheck",
+      "freq": "10s",
+      "timeout": "2s"
     }
+
   ],
+  
   "notifiers": [
     {
-      "type": "web",
-      "address": "mydomain.com/callback"
+      "type": "flapjack",
+      "address" : "boot2docker:6380"
+    },
+    { 
+      "type": "stderr"
     }
   ]
 }
@@ -58,6 +66,12 @@ By default pandik uses `~/.pandik.log` for deamon's log file, but this can be ov
 ```bash
 $ pandik -d -l /path/to/log.file -c /path/to/configuration.json
 ```
+
+## Usage with Flapjack
+
+http://flapjack.io is a alert routing and event processing system, pandik can feed events into it (flapjack expects a heartbeat of events).
+
+To use this - use the flapjack notifier - with the "address" being the redis hostname and port. 
     
 ## License
 
